@@ -120,30 +120,50 @@
                 <h3>Fudgy Brownies (Tekstur Basah)</h3>
                 <p class="price">100gr: 18.000</p>
                 <p class="price">18x8: 58.000</p>
+                <select class="varian" data-name="Fudgy Brownies (Tekstur Basah)">
+                    <option value="100gr" data-price="18000">100gr - 18.000</option>
+                    <option value="18x8" data-price="58000">18x8 - 58.000</option>
+                </select>
                 <button class="add-to-cart">Tambah ke Keranjang</button>
             </div>
             <div class="menu-item" data-name="Brownies Panggang Super Moist" data-price="18000">
                 <h3>Brownies Panggang Super Moist</h3>
                 <p class="price">100gr: 18.000</p>
                 <p class="price">20x9: 58.000</p>
+                <select class="varian" data-name="Brownies Panggang Super Moist">
+                    <option value="100gr" data-price="18000">100gr - 18.000</option>
+                    <option value="20x9" data-price="58000">20x9 - 58.000</option>
+                </select>
                 <button class="add-to-cart">Tambah ke Keranjang</button>
             </div>
             <div class="menu-item" data-name="Schotel" data-price="15000">
                 <h3>Schotel</h3>
                 <p class="price">200g: 15.000</p>
                 <p class="price">100g: 10.000</p>
+                <select class="varian" data-name="Schotel">
+                    <option value="200g" data-price="15000">200g - 15.000</option>
+                    <option value="100g" data-price="10000">100g - 10.000</option>
+                </select>
                 <button class="add-to-cart">Tambah ke Keranjang</button>
             </div>
             <div class="menu-item" data-name="Fusilli Carbonara" data-price="20000">
                 <h3>Fusilli Carbonara</h3>
                 <p class="price">200g: 20.000</p>
                 <p class="price">100g: 12.500</p>
+                <select class="varian" data-name="Fusilli Carbonara">
+                    <option value="200g" data-price="20000">200g - 20.000</option>
+                    <option value="100g" data-price="12500">100g - 12.500</option>
+                </select>
                 <button class="add-to-cart">Tambah ke Keranjang</button>
             </div>
             <div class="menu-item" data-name="Classic Tiramisu" data-price="15000">
                 <h3>Classic Tiramisu</h3>
                 <p class="price">150ml: 15.000</p>
                 <p class="price">250ml: 25.000</p>
+                <select class="varian" data-name="Classic Tiramisu">
+                    <option value="150ml" data-price="15000">150ml - 15.000</option>
+                    <option value="250ml" data-price="25000">250ml - 25.000</option>
+                </select>
                 <button class="add-to-cart">Tambah ke Keranjang</button>
             </div>
         </div>
@@ -167,8 +187,11 @@
             button.onclick = function() {
                 const menuItem = this.closest('.menu-item');
                 const name = menuItem.getAttribute('data-name');
-                const price = menuItem.getAttribute('data-price');
-                cart.push({ name, price });
+                const varianSelect = menuItem.querySelector('.varian');
+                const varian = varianSelect.value;
+                const price = varianSelect.options[varianSelect.selectedIndex].getAttribute('data-price');
+
+                cart.push({ name, varian, price });
                 updateCart();
             };
         });
@@ -179,7 +202,7 @@
             cartList.innerHTML = '';
             cart.forEach(item => {
                 const li = document.createElement('li');
-                li.textContent = `${item.name} - Rp ${item.price}`;
+                li.textContent = `${item.name} (${item.varian}) - Rp ${item.price}`;
                 cartList.appendChild(li);
             });
         }
@@ -193,7 +216,7 @@
 
             let orderDetails = 'Halo Teh Uni, saya ingin memesan:\n\n';
             cart.forEach(item => {
-                orderDetails += `${item.name} - Rp ${item.price}\n`;
+                orderDetails += `${item.name} (${item.varian}) - Rp ${item.price}\n`;
             });
 
             const message = encodeURIComponent(orderDetails);
