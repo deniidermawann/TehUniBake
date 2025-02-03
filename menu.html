@@ -279,18 +279,15 @@
         document.getElementById('applyVoucher').onclick = function() {
             const voucherCode = document.getElementById('voucherCode').value.trim().toUpperCase();
             const discountMessage = document.querySelector('.discount-message');
-
-            // Voucher valid dan diskon yang berlaku
-            const validVoucher = 'DISKON20'; // Contoh kode voucher
-            const discountAmount = 0.2; // Diskon 20%
-
-            if (voucherCode === validVoucher && total > 50000) { // Diskon hanya jika total lebih dari 50.000
-                discount = total * discountAmount; // Menghitung diskon
+            
+            if (voucherCode === 'DISKON10') {
+                discount = total * 0.1; // 10% diskon
                 discountMessage.style.display = 'block';
-                updateCart(); // Memperbarui tampilan keranjang
+                updateCart();
             } else {
+                discount = 0;
                 discountMessage.style.display = 'none';
-                alert('Voucher tidak valid atau tidak dapat digunakan pada pesanan ini.');
+                updateCart();
             }
         };
     </script>
