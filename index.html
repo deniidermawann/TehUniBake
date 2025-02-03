@@ -17,7 +17,7 @@
     <div class="container">
         <h2>Selamat Datang di Teh Uni Bake and Cake</h2>
         <p>Nikmati kelezatan kue terbaik kami dengan bahan berkualitas dan cita rasa istimewa.</p>
-        <h3>Terlaris</h3>
+        <h3>Best Seller</h3>
         <div class="menu">
             <div class="menu-item">
                 <h3>Fudgy Brownies</h3>
@@ -30,25 +30,10 @@
                 <p>250ml: 25.000</p>
             </div>
         </div>
-        <h3>Pesan Sekarang</h3>
-        <form id="orderForm" method="get" target="_blank">
-            <textarea id="orderDetails" name="orderDetails" rows="4" required placeholder="Tulis detail pesanan Anda di sini..."></textarea>
-            <button type="submit">Pesan Sekarang</button>
-        </form>
+        <p><a href="menu.html">Lihat Menu Lengkap dan Pesan Sekarang</a></p>
     </div>
     <div class="footer">
         <p>&copy; 2025 Teh Uni Bake and Cake. Semua hak dilindungi.</p>
     </div>
-
-    <script>
-        const form = document.getElementById('orderForm');
-        form.onsubmit = function(event) {
-            event.preventDefault(); // Mencegah form dari pengiriman biasa
-            const orderDetails = document.getElementById('orderDetails').value;
-            const message = `Halo Teh Uni, saya ingin memesan:\n\nDetail Pesanan: ${orderDetails}`;
-            const url = `https://wa.me/+6285157013135?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank'); // Membuka WhatsApp dengan pesan
-        };
-    </script>
 </body>
 </html>
