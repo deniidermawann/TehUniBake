@@ -199,8 +199,15 @@
                 const varian = varianSelect.value;
                 const price = parseInt(varianSelect.options[varianSelect.selectedIndex].getAttribute('data-price'));
 
-                // Menambahkan item ke keranjang
-                cart.push({ name, varian, price });
+                // Cek jika item sudah ada di keranjang
+                let itemInCart = cart.find(item => item.name === name && item.varian === varian);
+                if (itemInCart) {
+                    itemInCart.quantity += 1; // Menambah jumlah jika item sudah ada di keranjang
+                    itemInCart.totalPrice += price;
+                } else {
+                    cart.push({ name, varian, price, quantity: 1, totalPrice: price });
+                }
+
                 total += price; // Menambahkan harga ke total
                 updateCart(); // Memperbarui tampilan keranjang
             };
@@ -212,7 +219,7 @@
             cartList.innerHTML = '';
             cart.forEach(item => {
                 const li = document.createElement('li');
-                li.textContent = `${item.name} (${item.varian}) - Rp ${item.price}`;
+                li.textContent = `${item.quantity}x ${item.name} (${item.varian}) - Rp ${item.totalPrice}`;
                 cartList.appendChild(li);
             });
 
@@ -230,7 +237,7 @@
 
             let orderDetails = 'Halo Teh Uni, saya ingin memesan:\n\n';
             cart.forEach(item => {
-                orderDetails += `${item.name} (${item.varian}) - Rp ${item.price}\n`;
+                orderDetails += `${item.quantity}x ${item.name} (${item.varian}) - Rp ${item.totalPrice}\n`;
             });
             orderDetails += `\nTotal: Rp ${total.toLocaleString()}`;
 
