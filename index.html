@@ -30,9 +30,28 @@
                 <p>250ml: 25.000</p>
             </div>
         </div>
+        <h3>Pesan Sekarang</h3>
+        <form id="orderForm" action="https://wa.me/yourwhatsappnumber" method="get" target="_blank">
+            <label for="name">Nama Pemesan:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="orderDetails">Detail Pesanan:</label>
+            <textarea id="orderDetails" name="orderDetails" rows="4" required></textarea>
+            <button type="submit">Pesan Sekarang</button>
+        </form>
     </div>
     <div class="footer">
         <p>&copy; 2025 Teh Uni Bake and Cake. All rights reserved.</p>
     </div>
+
+    <script>
+        // Menambahkan query string otomatis untuk WhatsApp
+        const form = document.getElementById('orderForm');
+        form.onsubmit = function() {
+            const name = document.getElementById('name').value;
+            const orderDetails = document.getElementById('orderDetails').value;
+            const message = `Halo Teh Uni, saya ingin memesan:\n\nNama: ${name}\nDetail Pesanan: ${orderDetails}`;
+            form.action = `https://wa.me/yourwhatsappnumber?text=${encodeURIComponent(message)}`;
+        };
+    </script>
 </body>
 </html>
