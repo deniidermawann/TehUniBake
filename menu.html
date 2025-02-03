@@ -102,7 +102,7 @@
         .cart ul li {
             margin: 10px 0;
         }
-        .total, .discount, .shipping {
+        .total {
             font-size: 1.3em;
             font-weight: bold;
             color: #d1497c;
@@ -199,8 +199,6 @@
                 <!-- Item keranjang akan muncul di sini -->
             </ul>
             <p class="total">Total: Rp 0</p>
-            <p class="discount">Diskon: Rp 0</p>
-            <p class="shipping">Ongkir: Gratis</p>
             <div class="voucher">
                 <label for="voucherCode">Masukkan Kode Voucher: </label>
                 <input type="text" id="voucherCode" placeholder="Kode Voucher">
@@ -218,7 +216,7 @@
         let cart = [];
         let total = 0;
         let discount = 0;
-        const shippingCost = 0; // Ongkir Gratis
+        let shippingCost = 0; // Ongkir gratis
 
         // Menambah item ke keranjang
         document.querySelectorAll('.add-to-cart').forEach(button => {
@@ -249,7 +247,7 @@
             cartList.innerHTML = '';
             cart.forEach(item => {
                 const li = document.createElement('li');
-                li.textContent = `${item.quantity}x ${item.name} (${item.varian}) - Rp ${item.totalPrice}`;
+                li.textContent = `${item.quantity}x ${item.name} (${item.varian}) - Rp ${item.totalPrice.toLocaleString()}`;
                 cartList.appendChild(li);
             });
 
@@ -257,12 +255,6 @@
             const totalElement = document.querySelector('.total');
             const finalTotal = total - discount + shippingCost;
             totalElement.textContent = `Total: Rp ${finalTotal.toLocaleString()}`;
-
-            const discountElement = document.querySelector('.discount');
-            discountElement.textContent = `Diskon: Rp ${discount.toLocaleString()}`;
-
-            const shippingElement = document.querySelector('.shipping');
-            shippingElement.textContent = `Ongkir: Gratis`;
         }
 
         // Menyusun dan mengirim pesan ke WhatsApp
@@ -273,11 +265,16 @@
             }
 
             let orderDetails = 'Halo Teh Uni, saya ingin memesan:\n\n';
+            
+            // Menambahkan rincian item yang dipesan
             cart.forEach(item => {
-                orderDetails += `${item.quantity}x ${item.name} (${item.varian}) - Rp ${item.totalPrice}\n`;
+                orderDetails += `${item.quantity}x ${item.name} (${item.varian}) - Rp ${item.totalPrice.toLocaleString()}\n`;
             });
 
-            orderDetails += `\nTotal yang harus dibayar: Rp ${(total - discount + shippingCost).toLocaleString()}`;
+            // Menambahkan total harga, diskon, dan ongkir
+            orderDetails += `\nTotal yang harus dibayar: Rp ${(total - discount + shippingCost).toLocaleString()}\n`;
+            orderDetails += `Diskon: Rp ${discount.toLocaleString()}\n`;
+            orderDetails += `Ongkir: Gratis`;
 
             const encodedMessage = encodeURIComponent(orderDetails);
             const whatsappUrl = `https://wa.me/628123456789?text=${encodedMessage}`;
@@ -288,15 +285,18 @@
         document.getElementById('applyVoucher').onclick = function() {
             const voucherCode = document.getElementById('voucherCode').value.trim().toUpperCase();
             const discountMessage = document.querySelector('.discount-message');
-            
-            if (voucherCode === 'DISKON10') {
-                discount = total * 0.1; // 10% diskon
+
+            // Voucher valid dan diskon yang berlaku
+            const validVoucher = 'DISKON20'; // Contoh kode voucher
+            const discountAmount = 0.2; // Diskon 20%
+
+            if (voucherCode === validVoucher && total > 50000) { // Diskon hanya jika total lebih dari 50.000
+                discount = total * discountAmount; // Menghitung diskon
                 discountMessage.style.display = 'block';
-                updateCart();
+                updateCart(); // Memperbarui tampilan keranjang
             } else {
-                discount = 0;
                 discountMessage.style.display = 'none';
-                updateCart();
+                alert('Voucher tidak valid atau tidak dapat digunakan pada pesanan ini.');
             }
         };
     </script>
