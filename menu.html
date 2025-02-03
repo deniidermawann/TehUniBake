@@ -102,6 +102,12 @@
         .cart ul li {
             margin: 10px 0;
         }
+        .total {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #d1497c;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -172,6 +178,7 @@
             <ul id="cart-list">
                 <!-- Item keranjang akan muncul di sini -->
             </ul>
+            <p class="total">Total: Rp 0</p>
             <button id="orderButton">Pesan Sekarang</button>
         </div>
     </div>
@@ -181,6 +188,7 @@
 
     <script>
         let cart = [];
+        let total = 0;
 
         // Menambah item ke keranjang
         document.querySelectorAll('.add-to-cart').forEach(button => {
@@ -189,10 +197,12 @@
                 const name = menuItem.getAttribute('data-name');
                 const varianSelect = menuItem.querySelector('.varian');
                 const varian = varianSelect.value;
-                const price = varianSelect.options[varianSelect.selectedIndex].getAttribute('data-price');
+                const price = parseInt(varianSelect.options[varianSelect.selectedIndex].getAttribute('data-price'));
 
+                // Menambahkan item ke keranjang
                 cart.push({ name, varian, price });
-                updateCart();
+                total += price; // Menambahkan harga ke total
+                updateCart(); // Memperbarui tampilan keranjang
             };
         });
 
@@ -205,6 +215,10 @@
                 li.textContent = `${item.name} (${item.varian}) - Rp ${item.price}`;
                 cartList.appendChild(li);
             });
+
+            // Memperbarui total harga
+            const totalElement = document.querySelector('.total');
+            totalElement.textContent = `Total: Rp ${total.toLocaleString()}`;
         }
 
         // Menyusun dan mengirim pesan ke WhatsApp
@@ -218,6 +232,7 @@
             cart.forEach(item => {
                 orderDetails += `${item.name} (${item.varian}) - Rp ${item.price}\n`;
             });
+            orderDetails += `\nTotal: Rp ${total.toLocaleString()}`;
 
             const message = encodeURIComponent(orderDetails);
             const url = `https://wa.me/+6285157013135?text=${message}`;
