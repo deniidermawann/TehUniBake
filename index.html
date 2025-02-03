@@ -31,7 +31,7 @@
             </div>
         </div>
         <h3>Pesan Sekarang</h3>
-        <form id="orderForm" action="https://wa.me/yourwhatsappnumber" method="get" target="_blank">
+        <form id="orderForm" action="https://wa.me/+6285157013135" method="get" target="_blank">
             <label for="name">Nama Pemesan:</label>
             <input type="text" id="name" name="name" required>
             <label for="orderDetails">Detail Pesanan:</label>
@@ -50,7 +50,7 @@
             const name = document.getElementById('name').value;
             const orderDetails = document.getElementById('orderDetails').value;
             const message = `Halo Teh Uni, saya ingin memesan:\n\nNama: ${name}\nDetail Pesanan: ${orderDetails}`;
-            form.action = `https://wa.me/yourwhatsappnumber?text=${encodeURIComponent(message)}`;
+            form.action = `https://wa.me/+6285157013135?text=${encodeURIComponent(message)}`;
         };
     </script>
 </body>
