@@ -68,15 +68,13 @@ h2, h3 {
     color: white;
     text-align: center;
     padding: 10px;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
 }
 
+/* Form Pemesanan */
 form {
     background-color: #ffffff;
     padding: 20px;
-    margin-top: 40px;
+    margin-top: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
