@@ -108,6 +108,26 @@
             color: #d1497c;
             margin-top: 10px;
         }
+        .voucher {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        .voucher input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1em;
+            margin-right: 10px;
+        }
+        .voucher button {
+            background-color: #f2b5d4;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -179,6 +199,12 @@
                 <!-- Item keranjang akan muncul di sini -->
             </ul>
             <p class="total">Total: Rp 0</p>
+            <div class="voucher">
+                <label for="voucherCode">Masukkan Kode Voucher: </label>
+                <input type="text" id="voucherCode" placeholder="Kode Voucher">
+                <button id="applyVoucher">Terapkan Voucher</button>
+            </div>
+            <p class="discount-message" style="color: green; display: none;">Voucher diterapkan! Diskon berhasil.</p>
             <button id="orderButton">Pesan Sekarang</button>
         </div>
     </div>
@@ -189,6 +215,7 @@
     <script>
         let cart = [];
         let total = 0;
+        let discount = 0;
 
         // Menambah item ke keranjang
         document.querySelectorAll('.add-to-cart').forEach(button => {
@@ -225,7 +252,8 @@
 
             // Memperbarui total harga
             const totalElement = document.querySelector('.total');
-            totalElement.textContent = `Total: Rp ${total.toLocaleString()}`;
+            const finalTotal = total - discount;
+            totalElement.textContent = `Total: Rp ${finalTotal.toLocaleString()}`;
         }
 
         // Menyusun dan mengirim pesan ke WhatsApp
@@ -239,11 +267,31 @@
             cart.forEach(item => {
                 orderDetails += `${item.quantity}x ${item.name} (${item.varian}) - Rp ${item.totalPrice}\n`;
             });
-            orderDetails += `\nTotal: Rp ${total.toLocaleString()}`;
 
-            const message = encodeURIComponent(orderDetails);
-            const url = `https://wa.me/+6285157013135?text=${message}`;
-            window.open(url, '_blank');
+            orderDetails += `\nTotal yang harus dibayar: Rp ${(total - discount).toLocaleString()}`;
+
+            const encodedMessage = encodeURIComponent(orderDetails);
+            const whatsappUrl = `https://wa.me/628123456789?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        };
+
+        // Fungsi untuk menerapkan voucher
+        document.getElementById('applyVoucher').onclick = function() {
+            const voucherCode = document.getElementById('voucherCode').value.trim().toUpperCase();
+            const discountMessage = document.querySelector('.discount-message');
+
+            // Voucher valid dan diskon yang berlaku
+            const validVoucher = 'DISKON20'; // Contoh kode voucher
+            const discountAmount = 0.2; // Diskon 20%
+
+            if (voucherCode === validVoucher && total > 50000) { // Diskon hanya jika total lebih dari 50.000
+                discount = total * discountAmount; // Menghitung diskon
+                discountMessage.style.display = 'block';
+                updateCart(); // Memperbarui tampilan keranjang
+            } else {
+                discountMessage.style.display = 'none';
+                alert('Voucher tidak valid atau tidak dapat digunakan pada pesanan ini.');
+            }
         };
     </script>
 </body>
