@@ -102,7 +102,7 @@
         .cart ul li {
             margin: 10px 0;
         }
-        .total {
+        .total, .discount, .shipping {
             font-size: 1.3em;
             font-weight: bold;
             color: #d1497c;
@@ -199,6 +199,8 @@
                 <!-- Item keranjang akan muncul di sini -->
             </ul>
             <p class="total">Total: Rp 0</p>
+            <p class="discount">Diskon: Rp 0</p>
+            <p class="shipping">Ongkir: Gratis</p>
             <div class="voucher">
                 <label for="voucherCode">Masukkan Kode Voucher: </label>
                 <input type="text" id="voucherCode" placeholder="Kode Voucher">
@@ -216,6 +218,7 @@
         let cart = [];
         let total = 0;
         let discount = 0;
+        const shippingCost = 0; // Ongkir Gratis
 
         // Menambah item ke keranjang
         document.querySelectorAll('.add-to-cart').forEach(button => {
@@ -252,8 +255,14 @@
 
             // Memperbarui total harga
             const totalElement = document.querySelector('.total');
-            const finalTotal = total - discount;
+            const finalTotal = total - discount + shippingCost;
             totalElement.textContent = `Total: Rp ${finalTotal.toLocaleString()}`;
+
+            const discountElement = document.querySelector('.discount');
+            discountElement.textContent = `Diskon: Rp ${discount.toLocaleString()}`;
+
+            const shippingElement = document.querySelector('.shipping');
+            shippingElement.textContent = `Ongkir: Gratis`;
         }
 
         // Menyusun dan mengirim pesan ke WhatsApp
@@ -268,7 +277,7 @@
                 orderDetails += `${item.quantity}x ${item.name} (${item.varian}) - Rp ${item.totalPrice}\n`;
             });
 
-            orderDetails += `\nTotal yang harus dibayar: Rp ${(total - discount).toLocaleString()}`;
+            orderDetails += `\nTotal yang harus dibayar: Rp ${(total - discount + shippingCost).toLocaleString()}`;
 
             const encodedMessage = encodeURIComponent(orderDetails);
             const whatsappUrl = `https://wa.me/628123456789?text=${encodedMessage}`;
