@@ -31,7 +31,7 @@
             </div>
         </div>
         <h3>Pesan Sekarang</h3>
-        <form id="orderForm" action="https://wa.me/+6285157013135" method="get" target="_blank">
+        <form id="orderForm" method="get" target="_blank">
             <textarea id="orderDetails" name="orderDetails" rows="4" required placeholder="Tulis detail pesanan Anda di sini..."></textarea>
             <button type="submit">Pesan Sekarang</button>
         </form>
@@ -41,12 +41,13 @@
     </div>
 
     <script>
-        // Menambahkan query string otomatis untuk WhatsApp
         const form = document.getElementById('orderForm');
-        form.onsubmit = function() {
+        form.onsubmit = function(event) {
+            event.preventDefault(); // Mencegah form dari pengiriman biasa
             const orderDetails = document.getElementById('orderDetails').value;
             const message = `Halo Teh Uni, saya ingin memesan:\n\nDetail Pesanan: ${orderDetails}`;
-            form.action = `https://wa.me/+6285157013135?text=${encodeURIComponent(message)}`;
+            const url = `https://wa.me/+6285157013135?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank'); // Membuka WhatsApp dengan pesan
         };
     </script>
 </body>
