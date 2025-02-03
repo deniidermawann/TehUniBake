@@ -256,23 +256,26 @@
                 cartList.appendChild(li);
             });
 
-            const totalElement = document.querySelector('.total');
-            totalElement.textContent = `Total: Rp ${total}`;
+            let calculatedTotal = total - discount + shipping;
 
+            const totalElement = document.querySelector('.total');
+            totalElement.textContent = `Total: Rp ${calculatedTotal}`;
+
+            // Menentukan diskon dan ongkir berdasarkan total
             if (total >= 100000) {
-                discount = 10000;
-                shipping = 0;
+                discount = 10000; // Diskon jika lebih dari Rp 100.000
+                shipping = 0; // Ongkir gratis
                 document.querySelector('.discount-message').style.display = 'block';
                 document.querySelector('.shipping-message').style.display = 'block';
             } else {
                 discount = 0;
-                shipping = 20000;
+                shipping = 20000; // Ongkir jika kurang dari Rp 100.000
                 document.querySelector('.discount-message').style.display = 'none';
                 document.querySelector('.shipping-message').style.display = 'none';
             }
 
-            const finalPrice = total - discount + shipping;
-            totalElement.textContent = `Total: Rp ${finalPrice}`;
+            calculatedTotal = total - discount + shipping; // Hitung total akhir
+            totalElement.textContent = `Total: Rp ${calculatedTotal}`;
         }
 
         // Menerapkan voucher diskon
